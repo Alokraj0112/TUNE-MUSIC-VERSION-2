@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Tune Music</title>
+    <link rel="icon" type="image/png" href="logo.png"> <!-- Add your logo as favicon -->
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('login-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ripple Effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: ripple 3s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes ripple {
+            0% {
+                opacity: 0.6;
+                width: 200px;
+                height: 200px;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 0.2;
+                width: 400px;
+                height: 400px;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+            100% {
+                opacity: 0.1;
+                width: 1600px;
+                height: 1600px;
+                transform: translate(-50%, -50%) scale(3);
+            }
+        }
+
+        /* Login Container */
+        .login-container {
+            background: rgba(255, 255, 255, 0.1); /* Transparent white background */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 20px 30px;
+            text-align: center;
+            width: 300px;
+            z-index: 2; /* Bring login box to front */
+            animation: fadeIn 1.2s ease-in-out;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-container h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .login-container input::placeholder {
+            color: #ddd;
+        }
+
+        .login-container input[type="button"] {
+            background-color: #1db954;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .login-container input[type="button"]:hover {
+            background-color: #14833b;
+            transform: scale(1.05);
+        }
+
+        /* Links */
+        .login-container a {
+            display: block;
+            margin-top: 10px;
+            color: #1db954;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s;
+        }
+
+        .login-container a:hover {
+            color: #fff;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Container -->
+    <div id="loginBox" class="login-container">
+        <h1>Login to Tune Music</h1>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="button" value="Login" onclick="handleLogin()">
+            <input type="button" value="Signup" onclick="handleSignup()">
+        </form>
+        <a href="#" onclick="handleForgotPassword()">Forgot Password?</a>
+        <a href="#">Help</a>
+    </div>
+
+    <script>
+        function handleLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const storedPassword = sessionStorage.getItem(username);
+
+            if (storedPassword && storedPassword === password) {
+                alert("Login successful!");
+                // Redirect to the app
+                window.location.href = "app.html";
+            } else {
+                alert("Incorrect username or password!");
+            }
+        }
+
+        function handleSignup() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (!username || !password) {
+                alert("Please enter a username and password to signup.");
+                return;
+            }
+
+            if (sessionStorage.getItem(username)) {
+                alert("Username already exists. Please choose a different username.");
+            } else {
+                sessionStorage.setItem(username, password);
+                alert("Signup successful! You can now log in.");
+            }
+        }
+
+        function handleForgotPassword() {
+            const username = prompt("Enter your username to retrieve your password:");
+
+            if (!username) {
+                alert("Username is required.");
+                return;
+            }
+
+            const storedPassword = sessionStorage.getItem(username);
+
+            if (storedPassword) {
+                alert(`Your password is: ${storedPassword}`);
+            } else {
+                alert("Username not found. Please sign up.");
+            }
+        }
+    </script>
+</body>
+</html>
